@@ -5,9 +5,10 @@
 \begin{problema}{stockSandwichesL}{l: Local, h:Hamburguesa}{Cantidad}
 \end{problema}
 
-\begin{problema}{bebidasDelLocalL}{l: Local}{[Bebida]}
+\begin{problema}[bebidas]{bebidasDelLocalL}{l: Local}{[Bebida]}
+    \asegura{mismos(\res,bebidasDelLocal(l))}
 \end{problema}
-	
+
 \begin{problema}{sandwichesDelLocalL}{l: Local}{[Hamburguesa]}
 \end{problema}
 
@@ -17,7 +18,9 @@
 \begin{problema}{desempleadosL}{l: Local}{[Empleado]}
 \end{problema}
 
-\begin{problema}{energiaEmpleadoL}{l: Local, e:Empleado}{Energia}
+\begin{problema}[energia]{energiaEmpleadoL}{l: Local, e:Empleado}{Energia}
+    \requiere{e \in empleados(l)}
+    \asegura{\res == energiaEmpleado(l,e)}
 \end{problema}
 
 \begin{problema}{ventasL}{l: Local}{[Pedido]}
@@ -30,13 +33,19 @@
 \end{problema}
 
 \begin{problema}{candidatosAEmpleadosDelMesL}{l: Local}{[Empleado]}
-\end{problema}
+    \asegura{mismos(\res, [e | e \selec empleados(l), ventasEchas(l,e) == maxVentas, \\
+        combosVendidos(l,e) == maxCombosConVentas])}
 
+    \aux{maxVentas}{}{\ent}{
+        max([ventasEchas(l,e) | e \selec empleados(l)])
+    }
+    \aux{maxCombosConVentas}{}{\ent}{
+        max([combosVendidos(l,e) | e \selec empleados(l), ventasEchas(l,e) == maxVentas])
+    }
+\end{problema}
 
 \begin{problema}{sancionL}{l: Local, e:Empleado, n:Energia}{}
 \end{problema}
-
-
 
 \begin{problema}{elVagonetaL}{l: Local}{Empleado}
 \end{problema}
@@ -45,4 +54,5 @@
 \end{problema}
 
 \begin{problema}{agregarComboAlPedidoL}{l: Local, c: Combo, n:\ent}{}
- \end{problema}
+\end{problema}
+

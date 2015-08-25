@@ -1,5 +1,8 @@
-\begin{problema}{nuevoC}{b: Bebida, h: Hamburguesa, d: Energia}{Combo}
-
+\begin{problema}[combo]{nuevoC}{b: Bebida, h: Hamburguesa, d: Energia}{Combo}
+    \requiere{energiaEnRango(d)}
+    \asegura{bebida(\res) == b}
+    \asegura{sandwich(\res) == c}
+    \asegura{dificultad(\res) == d}
 \end{problema}
 
 \begin{problema}{bebidaC}{c: Combo}{Bebida}

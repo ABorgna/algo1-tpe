@@ -18,6 +18,15 @@
 
 % los aux del tipo local
 
+\aux{numeros}{ps: [Pedido]} {[\ent]}{
+    [numero(p) | p \selec ps]
+}
 
+\aux{ventasEchas}{l:Local, e:Empleado}{\ent}{
+    |[ \: p \: | \: p \selec ventas(l), \: atendio(p) == e]|
+}
 
+\aux{combosVendidos}{l:Local, e:Empleado}{\ent}{
+    \sum [ \: |combos(p)| \: | \: p \selec ventas(l), \: atendio(p) == e]
+}
 

@@ -1,5 +1,10 @@
 
-\begin{problema}{nuevoP}{n: \ent, e: Empleado, cs: [Combo]}{Pedido}
+\begin{problema}[pedido]{nuevoP}{n: \ent, e: Empleado, cs: [Combo]}{Pedido}
+    \requiere{n > 0}
+    \requiere{|cs| > 0}
+    \asegura{numero(\res) == n}
+    \asegura{atendio(\res) == e}
+    \asegura{mismos(combos(\res), cs)}
 \end{problema}
 
 \begin{problema}{numeroP}{p: Pedido}{\ent}
@@ -12,6 +17,10 @@
 \end{problema}
 
 \begin{problema}{agregarComboP}{p: Pedido, c: Combo}{}
+    \modifica{p}
+    \asegura{numero(p) == numero(pre(p))}
+    \asegura{atendio(p) == atendio(pre(p))}
+    \asegura{combos(p) == combos(pre(p)) ++ [c]}
 \end{problema}
 
 \begin{problema}{anularComboP}{p: Pedido, i:\ent}{}
