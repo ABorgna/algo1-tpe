@@ -7,6 +7,14 @@
         0 \leq e \leq 100
 }
 
+\aux{rango}{ns : [\ent]}{[\ent]}{
+    [min(ns) \ldots max(ns)]
+}
+
+\aux{find}{xs : [T], x : T}{\ent}{
+    \sum [1 \: | \: i \selec [0 \ldots |xs|), x \not\in xs[\ldots i] \:]
+}
+
 \subsection{Combo}
 % los aux del tipo combo
 
@@ -19,14 +27,14 @@
 % los aux del tipo local
 
 \aux{numeros}{ps: [Pedido]} {[\ent]}{
-    [numero(p) | p \selec ps]
+    [numero(p) \: | \: p \selec ps]
 }
 
-\aux{ventasEchas}{l:Local, e:Empleado}{\ent}{
+\aux{ventasEchas}{l: Local, e: Empleado}{\ent}{
     |[ \: p \: | \: p \selec ventas(l), \: atendio(p) == e]|
 }
 
-\aux{combosVendidos}{l:Local, e:Empleado}{\ent}{
+\aux{combosVendidos}{l: Local, e: Empleado}{\ent}{
     \sum [ \: |combos(p)| \: | \: p \selec ventas(l), \: atendio(p) == e]
 }
 

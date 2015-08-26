@@ -33,14 +33,17 @@
 \end{problema}
 
 \begin{problema}{candidatosAEmpleadosDelMesL}{l: Local}{[Empleado]}
-    \asegura{mismos(\res, [e | e \selec empleados(l), ventasEchas(l,e) == maxVentas, \\
-        combosVendidos(l,e) == maxCombosConVentas])}
+    \requiere{|empleados(l)| > 0}
+    \asegura{|\res| > 0}
+    \asegura{mismos(\res, [e \: | \: e \selec empleados(l), ventasEchas(l,e) == maxVentas, combosVendidos(l,e) == maxCombos])}
+
+    \medskip
 
     \aux{maxVentas}{}{\ent}{
-        max([ventasEchas(l,e) | e \selec empleados(l)])
+        max([ventasEchas(l,e) \: | \: e \selec empleados(l)])
     }
-    \aux{maxCombosConVentas}{}{\ent}{
-        max([combosVendidos(l,e) | e \selec empleados(l), ventasEchas(l,e) == maxVentas])
+    \aux{maxCombos}{}{\ent}{
+        max([combosVendidos(l,e) \: | \: e \selec empleados(l), ventasEchas(l,e) == maxVentas])
     }
 \end{problema}
 
@@ -54,5 +57,57 @@
 \end{problema}
 
 \begin{problema}{agregarComboAlPedidoL}{l: Local, c: Combo, n:\ent}{}
+    \requiere[pedidoValido]{(\exists ped \selec ventas(l)) numero(ped)==n}
+    \requiere[hayBebidas]{stockBebidas(l,bebida(c)) > 0}
+    \requiere[haySandwiches]{stockSandwiches(l,sandwich(c)) > 0}
+    \requiere[sigueEmpleado]{e \in empleados(l)}
+    \requiere[energiaSuficiente]{energiaEmpleado(l,e) >= dificultad(0)}
+
+    \medskip
+
+    \modifica{l}
+
+    \medskip
+
+    \asegura{bebidasDelLocal(l) == bebidasDelLocal(pre(l))}
+    \asegura{sandwichesDelLocal(l) == sandwichesDelLocal(pre(l))}
+    \asegura{empleados(l) == empleados(pre(l))}
+    \asegura{desempleados(l) == desempleados(pre(l))}
+    \asegura{
+        (\forall b \in bebidasDelLocal(l)) \\
+        stockBebidas(l,b) == stockBebidas(pre(l),b) - \beta(b == bebida(c))
+    }
+    \asegura{
+        (\forall s \in sandwichesDelLocal(l)) \\
+        stockSandwiches(l,s) == stockSandwiches(pre(l),s) - \beta(s == sandwich(c))
+    }
+    \asegura[conservacionDeLaEnergia]{
+        (\forall emp \in empleados(l)) \\
+        energiaEmpleado(l,emp) == energiaEmpleado(pre(l),emp) - \beta(emp == e) * dificultad(c)
+    }
+    \asegura[conservaVentas]{ \\
+        |ventas(l)| == |ventas(pre(l))| \land \\
+        (\forall i \selec [0 \ldots |ventas(l)|), i \neq posPedido) ventas(l)[i] == ventas(pre(l))[i]
+    }
+    \asegura[agregaCombo]{ \\
+        numero(nuevoP) == numero(p) \land \\
+        atendio(nuevoP) == atendio(p) \land \\
+        mismos(combos(nuevoP),c : combos(p))
+    }
+
+    \medskip
+
+    \aux{p}{}{Pedido}{
+        cab([ped \: | \: ped \selec ventas(pre(l)), numero(ped) == n])
+    }
+    \aux{posPedido}{}{\ent}{
+        find(ventas(pre(l)),p)
+    }
+    \aux{e}{}{Empleado}{
+        atendio(p)
+    }
+    \aux{nuevoP}{}{Pedido}{
+        ventas(l)[posPedido]
+    }
 \end{problema}
 
