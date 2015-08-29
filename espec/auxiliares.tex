@@ -2,13 +2,20 @@
   (\forall i,j \selec [0..|ls|), i \neq j) ls_i \neq ls_j
 }
 
-
 \aux{energiaEnRango}{e: Energia} {\bool}{
         0 \leq e \leq 100
 }
 
-\aux{rango}{ns : [\ent]}{[\ent]}{
-    [min(ns) \ldots max(ns)]
+\aux{min}{xs : [\ent]}{\ent}{
+    cab([n \:|\: n \selec xs, (\forall x \selec xs) n \le xs])
+}
+
+\aux{max}{xs : [\ent]}{\ent}{
+    cab([n \:|\: n \selec xs, (\forall x \selec xs) n \ge xs])
+}
+
+\aux{rango}{xs : [\ent]}{[\ent]}{
+    [min(xs) \ldots max(xs)]
 }
 
 \aux{find}{xs : [T], x : T}{\ent}{
