@@ -58,10 +58,10 @@
 
 \begin{problema}{agregarComboAlPedidoL}{l: Local, c: Combo, n:\ent}{}
     \requiere[pedidoValido]{(\exists p \selec ventas(l)) numero(p)==n}
-    \requiere[hayBebidas]{stockBebidas(l,bebida(c)) > 0}
-    \requiere[haySandwiches]{stockSandwiches(l,sandwich(c)) > 0}
+    \requiere[hayBebidas]{bebida(c) \in bebidasDelLocal(l) \land stockBebidas(l,bebida(c)) > 0}
+    \requiere[haySandwiches]{sandwich(c) \in sandwichesDelLocal(l) \land stockSandwiches(l,sandwich(c)) > 0}
     \requiere[sigueEmpleado]{empleado(l,n) \in empleados(l)}
-    \requiere[energiaSuficiente]{energiaEmpleado(l,empleado(l,n)) >= dificultad(c)}
+    \requiere[energiaSuficiente]{energiaEmpleado(l,empleado(l,n)) \ge dificultad(c)}
 
     \medskip
 
@@ -69,10 +69,10 @@
 
     \medskip
 
-    \asegura{bebidasDelLocal(l) == bebidasDelLocal(pre(l))}
-    \asegura{sandwichesDelLocal(l) == sandwichesDelLocal(pre(l))}
-    \asegura{empleados(l) == empleados(pre(l))}
-    \asegura{desempleados(l) == desempleados(pre(l))}
+    \asegura{mismos(bebidasDelLocal(l), bebidasDelLocal(pre(l)))}
+    \asegura{mismos(sandwichesDelLocal(l), sandwichesDelLocal(pre(l)))}
+    \asegura{mismos(empleados(l), empleados(pre(l))}
+    \asegura{mismos(desempleados(l), desempleados(pre(l))}
     \asegura{
         (\forall b \in bebidasDelLocal(l)) \\
         stockBebidas(l,b) == stockBebidas(pre(l),b) - \beta(b == bebida(c))
@@ -91,8 +91,8 @@
     }
     \asegura[agregaCombo]{ \\
         numero(ventas(l)[\: posPedido(pre(l),n) \:]) == numero(pedido(pre(l),n)) \land \\
-        atendio(ventas(l)[\: posPedido(pre(l),n) \:])) == atendio(pedido(pre(l),n)) \land \\
-        mismos(combos(posPedido(pre(l),n)), \: c : combos(pedido(pre(l),n)))
+        atendio(ventas(l)[\: posPedido(pre(l),n) \:]) == atendio(pedido(pre(l),n)) \land \\
+        combos(ventas(l)[\: posPedido(pre(l),n) \:]) == combos(pedido(pre(l),n)) ++ [c]
     }
 
     \medskip

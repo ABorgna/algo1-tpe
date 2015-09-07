@@ -24,7 +24,7 @@
 	\invariante[empleadosDistintos]{distintos(empleados(l)++desempleados(l))}
 	\invariante[energiaHasta100]{(\forall e \selec empleados(l)) energiaEnRango(energiaEmpleado(l,e))}
 	\invariante[empleadosQAtendieronDelLocal]{(\forall v \selec ventas(l)) atendio(v) \in empleados(l)++desempleados(l)}
-        \invariante[ventasCorrelativas]{mismos(numsVentas(l)),rango(numsVentas(l))}
+        \invariante[ventasCorrelativas]{mismos(numsVentas(l),rango(numsVentas(l)))}
 	\invariante[combosDeLocal]{\ldots}
 
         \medskip
