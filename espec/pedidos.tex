@@ -33,6 +33,18 @@
 \begin{problema}{elMezcladitoP}{p: Pedido}{}
 	\modifica{p}
 	
-	\asegura{(\forall i,j \selec combos(p), i \neq j)  \neg comboIgual(combos(p)_i,combos(p)_j}
+	\requiere{|combos(p)| \geq |bebidasDe(p)|*|sandwichesDe(p)|}
 	
+	\asegura{(\forall i,j \selec combos(p), i \neq j)  \neg comboIgual(combos(p)_i, combos(p)_j)}
+	\asegura{|combos(p)| == |combos(pre(p))|}
+	\asegura{(\forall c \selec combos(p)) bebida(c) \in [ bebida(x) | x \selec combos(pre(p))]}
+	\asegura{(\forall c \selec combos(p)) sandwich(c) \in [ sandwich(x) | x \selec combos(pre(p))]}
+	
+	
+	\aux{bebidasDe}{p : Pedido}{[Bebida]}{
+		sinRep([bebida(c)|c \selec combos(p)]
+	}
+	\aux{sandwichesDe}{p : Pedido}{[Hamburguesa]}{
+		sinRep([sandwich(c)|c \selec combos(p)])
+	}
 \end{problema}
