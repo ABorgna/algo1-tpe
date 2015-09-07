@@ -128,7 +128,7 @@
     \aux{empleado}{l : Local, n : \ent}{Empleado}{
     	atendio(pedido(l,n))
     }
-    \aux{canteSandwich}{s : Hamburguesa, p : Pedido}{\ent}{
+    \aux{cantSandwich}{s : Hamburguesa, p : Pedido}{\ent}{
     	contar(s,[sandwich(c)|c \selec combos(p)])
     }
     \aux{cantBebida}{b : Bebida, p : Pedido}{\ent}{
