@@ -22,16 +22,27 @@
     \sum [1 \: | \: i \selec [0 \ldots |xs|), x \not\in xs[\ldots i] \:]
 }
 
+\aux{contar}{x : T, xs : [T]}{\ent}{
+	|[y | y \selec xs, y == x]|
+}
+
 \subsection{Combo}
 % los aux del tipo combo
+\aux{comboIgual}{c1 : Combo, c2 : Combo}{\bool}{
+	bebida(c1) == bebida(c2) ^ sandwich(c1) == sandwich(c2)
+}
 
 \subsection{Pedido}
 
 % los aux del tipo pedido
 
+
 \subsection{Local}
 
 % los aux del tipo local
+\aux{numsVentas}{l: Local}{[\ent]}{
+	numeros(ventas(l))
+}
 
 \aux{numeros}{ps: [Pedido]} {[\ent]}{
     [numero(p) \: | \: p \selec ps]

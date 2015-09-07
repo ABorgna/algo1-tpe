@@ -14,6 +14,7 @@
 \end{problema}
 
 \begin{problema}{combosP}{p: Pedido}{[Combo]}
+	\asegura{\res == combos(p)}
 \end{problema}
 
 \begin{problema}{agregarComboP}{p: Pedido, c: Combo}{}
@@ -30,4 +31,8 @@
 \end{problema}
 
 \begin{problema}{elMezcladitoP}{p: Pedido}{}
+	\modifica{p}
+	
+	\asegura{(\forall i,j \selec combos(p), i \neq j)  \neg comboIgual(combos(p)_i,combos(p)_j}
+	
 \end{problema}
