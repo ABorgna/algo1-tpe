@@ -29,7 +29,7 @@
 
 \begin{problema}{cambiarBebidaComboP}{p: Pedido, b: Bebida, i:\ent} {}
     \modifica{p}
-    \requiere{i > 0}
+    \requiere{0 \leq i < |combos(pre(p))|}
     \asegura{numero(p) == numero(pre(p))}
     \asegura{atendio(p) == atendio(pre(p))}
     \asegura{(\forall \; j \; \leftarrow  [0 \: ..\: |combos(pre(p))|], \; j\neq i) \; combos(p)[j]==combos(pre(p))[j]}
