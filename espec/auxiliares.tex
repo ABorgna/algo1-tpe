@@ -14,7 +14,7 @@
     cab([n \:|\: n \selec xs, (\forall x \selec xs) n \ge xs])
 }
 
-\aux{rango}{ns : [\ent]}{[\ent]}{
+\aux{rango}{xs : [\ent]}{[\ent]}{
     [min(xs) \ldots max(xs)]
 }
 
@@ -22,16 +22,36 @@
     \sum [1 \: | \: i \selec [0 \ldots |xs|), x \not\in xs[\ldots i] \:]
 }
 
+\aux{contar}{x : T, xs : [T]}{\ent}{
+	|[y | y \selec xs, y == x]|
+}
+
+\aux{sinRep}{xs : [T]}{[T]}{
+	[xs_i | i \selec [0..|xs|), j \selec [i..|xs), i \neq j]
+}
+
 \subsection{Combo}
 % los aux del tipo combo
+\aux{comboIgual}{c1 : Combo, c2 : Combo}{\bool}{
+	bebida(c1) == bebida(c2) ^ sandwich(c1) == sandwich(c2)
+}
 
 \subsection{Pedido}
-
+\aux{bebidasCombo}{cs : [Combo]}{[Bebida]}{
+	[bebida(c)|c \selec cs]
+}
+\aux{sandwichesCombo}{cs : [Combo]}{[Sandwich]}{
+	[sandwich(c)|c \selec cs]
+}
 % los aux del tipo pedido
+
 
 \subsection{Local}
 
 % los aux del tipo local
+\aux{numsVentas}{l: Local}{[\ent]}{
+	numeros(ventas(l))
+}
 
 \aux{numeros}{ps: [Pedido]} {[\ent]}{
     [numero(p) \: | \: p \selec ps]

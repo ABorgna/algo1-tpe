@@ -4,7 +4,7 @@
     \requiere{|cs| > 0}
     \asegura{numero(\res) == n}
     \asegura{atendio(\res) == e}
-    \asegura{mismos(combos(\res), cs)}
+    \asegura{combos(\res) == cs}
 \end{problema}
 
 \begin{problema}{numeroP}{p: Pedido}{\ent}
@@ -15,6 +15,7 @@
 \end{problema}
 
 \begin{problema}{combosP}{p: Pedido}{[Combo]}
+	\asegura{\res == combos(p)}
 \end{problema}
 
 \begin{problema}{agregarComboP}{p: Pedido, c: Combo}{}
@@ -39,4 +40,18 @@
 \end{problema}
 
 \begin{problema}{elMezcladitoP}{p: Pedido}{}
+	\requiere{|combos(p)| \leq |bebidasDe(p)|*|sandwichesDe(p)|}
+	\modifica{p}
+	\asegura{(\forall i,j \selec combos(p), i \neq j)  \neg comboIgual(combos(p)_i, combos(p)_j)}
+	\asegura{|combos(p)| == |combos(pre(p))|}
+	\asegura{(\forall c \selec combos(p)) bebida(c) \in bebidasDe(pre(p)))}
+	\asegura{(\forall c \selec combos(p)) sandwich(c) \in sandwichesDe(pre(p))}
+	
+	
+	\aux{bebidasDe}{p : Pedido}{[Bebida]}{
+		sinRep(bebidasCombo(combos(p)))
+	}
+	\aux{sandwichesDe}{p : Pedido}{[Hamburguesa]}{
+		sinRep(sandwichesCombo(combos(p)))
+	}
 \end{problema}
