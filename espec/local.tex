@@ -48,9 +48,12 @@
 	
 	\asegura{\neg sePuede(pre(l),p) \Rightarrow mismos([x | x \selec empleados(pre(l)), x \neq atendio(p)], empleados(l) )}
 	\asegura{\neg sePuede(pre(l),p) \Rightarrow mismos(desempleados(pre(l))++atendio(p), desempleados(l))}
-	\asegura{\neg sePuede(pre(l),p) \Rightarrow (\forall e \selec empleados(l)) energiaEmpleados(l,e) == energiaEmpleados(pre(l))}
-	\asegura{\neg sePuede(pre(l),p) \Rightarrow (\forall b \selec bebidasDelLocal(l))stockBebidas(l,b) == stockBebidas(pre(l))}
-	\asegura{\neg sePuede(pre(l),p) \Rightarrow (\forall s \selec sandwichesDelLocal(l))stockSandwiches(l,s) == stockSandwiches(pre(l))}
+	\asegura{\neg sePuede(pre(l),p) \Rightarrow \\
+		(\forall e \selec empleados(l)) energiaEmpleados(l,e) == energiaEmpleados(pre(l))}
+	\asegura{\neg sePuede(pre(l),p) \Rightarrow \\
+		(\forall b \selec bebidasDelLocal(l))stockBebidas(l,b) == stockBebidas(pre(l),b)}
+	\asegura{\neg sePuede(pre(l),p) \Rightarrow \\
+		(\forall s \selec sandwichesDelLocal(l))stockSandwiches(l,s) == stockSandwiches(pre(l),s)}
 	\asegura{\neg sePuede(pre(l),p) \Rightarrow ventas(l) == ventas(pre(l))}
 
 	
@@ -58,10 +61,14 @@
 	
 	\asegura{sePuede(pre(l),p) \Rightarrow empleados(l) == empleados(pre(l))}
 	\asegura{sePuede(pre(l),p) \Rightarrow desempleados(l) == desempleados(pre(l))}
-	\asegura{sePuede(pre(l),p) \Rightarrow (\forall e \selec empleados(l), e \neq atendio(p)) energiaEmpleados(l,e) == energiaEmpleados(pre(l))}
-	\asegura{sePuede(pre(l),p) \Rightarrow energiaEmpleados(l,atendio(p)) == energiaEmpleados(pre(l),atendio(p)) - energiaPedido(p)}
-	\asegura{sePuede(pre(l),p) \Rightarrow (\forall b \selec bebidasDelLocal(l))stockBebidas(l,b) == stockBebidas(pre(l)) - cantBebida(b,p)}
-	\asegura{sePuede(pre(l),p) \Rightarrow (\forall s \selec sandwichesDelLocal(l))stockSandwiches(l,s) == stockSandwiches(pre(l)) - cantSandwich(s,p)}
+	\asegura{sePuede(pre(l),p) \Rightarrow \\
+		(\forall e \selec empleados(l), e \neq atendio(p)) energiaEmpleados(l,e) == energiaEmpleados(pre(l))}
+	\asegura{sePuede(pre(l),p) \Rightarrow \\
+		energiaEmpleados(l,atendio(p)) == energiaEmpleados(pre(l),atendio(p)) - energiaPedido(p)}
+	\asegura{sePuede(pre(l),p) \Rightarrow \\ 
+		(\forall b \selec bebidasDelLocal(l))stockBebidas(l,b) == stockBebidas(pre(l),b) - cantBebida(b,p)}
+	\asegura{sePuede(pre(l),p) \Rightarrow  \\
+		 (\forall s \selec sandwichesDelLocal(l))stockSandwiches(l,s) == stockSandwiches(pre(l),s) - cantSandwich(s,p)}
 	\asegura{sePuede(pre(l),p) \Rightarrow mismos(ventas(l),ventas(pre(l))++p)}
 	
 	
@@ -71,7 +78,7 @@
 		\sum [dificultad(x) | x \selec combos(p)]
 	}
 	\aux{sePuede}{l : Local, p : Pedido}{\bool}{
-		energiaEmpleado(atendio(p)) > energiaPedido(p)
+		energiaEmpleado(l,atendio(p)) > energiaPedido(p)
 	}
 	\aux{cantSandwich}{s : Hamburguesa, p : Pedido}{\ent}{
 		contar(s,[sandwich(c)|c \selec combos(p)])
