@@ -21,23 +21,38 @@
 
 \begin{problema}{agregarComboP}{p: Pedido, c: Combo}{}
     \modifica{p}
+   
+	\medskip
+   
     \asegura{numero(p) == numero(pre(p))}
     \asegura{atendio(p) == atendio(pre(p))}
     \asegura{combos(p) == combos(pre(p)) ++ [c]}
 \end{problema}
 
 \begin{problema}{anularComboP}{p: Pedido, i:\ent}{}
-\requiere{0 \leq i < |combos(p)|}
+	\requiere{0 \leq i < |combos(p)|}
     \requiere{|combos(p)|>1}
+   
+	\medskip   
+   
     \modifica{p}
+    
+	\medskip    
+    
     \asegura{numero(p) == numero(pre(p))}
     \asegura{atendio(p) == atendio(pre(p))}
-    \asegura{combos(p) == [combos(pre(p))[j]|j \leftarrow [0 \: ..\: |combos(pre(p))|), \; j\neq i) \; ]}
+    \asegura{combos(p) == [combos(pre(p))[j]|j \selec [0 \: ..\: |combos(pre(p))|), \; j\neq i) \; ]}
 \end{problema}
 
 \begin{problema}{cambiarBebidaComboP}{p: Pedido, b: Bebida, i:\ent} {}
     \requiere{0 \leq i < |combos(p)|}
+   
+	\medskip   
+   
     \modifica{p}
+
+	\medskip
+
     \asegura{numero(p) == numero(pre(p))}
     \asegura{atendio(p) == atendio(pre(p))}
     \asegura{(\forall \; j \; \leftarrow  [0 \: ..\: |combos(pre(p))|), \; j\neq i) \; combos(p)[j]==combos(pre(p))[j]}
@@ -48,7 +63,13 @@
 
 \begin{problema}{elMezcladitoP}{p: Pedido}{}
 	\requiere{|combos(p)| \leq |bebidasDe(p)|*|sandwichesDe(p)|}
+	
+	\medskip
+	
 	\modifica{p}
+
+	\medskip
+
 	\asegura{(\forall i,j \selec combos(p), i \neq j)  \neg comboIgual(combos(p)_i, combos(p)_j)}
 	\asegura{|combos(p)| == |combos(pre(p))|}
 	\asegura{(\forall c \selec combos(p)) bebida(c) \in bebidasDe(pre(p)))}
