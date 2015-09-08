@@ -127,8 +127,8 @@
 	 (mismos(empleados(l),empleados(pre(l))) \: \land \:  mismos(desempleados(l),desempleados(pre(l))) \\
 	 \land \: energiaEmpleado(l,e) == energiaEmpleado(pre(l),e)-n)}
 	 \asegura[esDespedido]{energiaEmpleado(pre(l),e)-n < 0 \Rightarrow \\
-	 (mismos(empleados(l),sacar(e,empleados(pre(l)))) \: \land \:  mismos(desempleados(l),e:desempleados(pre(l))))
-	 }
+	 (mismos(empleados(l),sacar(e,empleados(pre(l)))) \: \land \:  mismos(desempleados(l),e:desempleados(pre(l))))}
+	  \asegura{(\forall x \selec empleados(l), x \neq e) enegiaEmpleado(l,x) == enegiaEmpleado(pre(l),x)}
 \end{problema}
 
 \begin{problema}{elVagonetaL}{l: Local}{Empleado}
@@ -151,8 +151,10 @@
     \asegura{sandwichesDelLocal(l) == sandwichesDelLocal(pre(l))}
     \asegura{(\forall e \selec empleados(l), e \neq empleado(l,n)) energiaEmpleados(l,e) == energiaEmpleados(pre(l))}
     \asegura{energiaEmpleados(l,empleado(l,n)) == energiaEmpleados(pre(l),empleado(l,n)) + energiaPedido(pedido(pre(l),n))}
-    \asegura{(\forall b \selec bebidasDelLocal(l))stockBebidas(l,b) == stockBebidas(pre(l)) + cantBebida(b,pedido(pre(l),n))}
-    \asegura{(\forall s \selec sandwichesDelLocal(l))stockSandwiches(l,s) == stockSandwiches(pre(l)) + cantSandwich(s,pedido(pre(l),n))}
+    \asegura{(\forall b \selec bebidasDelLocal(l))\\
+    stockBebidas(l,b) == stockBebidas(pre(l)) + cantBebida(b,pedido(pre(l),n))}
+    \asegura{(\forall s \selec sandwichesDelLocal(l))\\
+    stockSandwiches(l,s) == stockSandwiches(pre(l)) + cantSandwich(s,pedido(pre(l),n))}
     \asegura{mismos(ventas(l),[v | v \selec ventas(pre(l)), v \neq pedido(pre(l),n)]}
     
     \medskip
