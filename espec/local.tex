@@ -35,7 +35,7 @@
 \end{problema}
 
 \begin{problema}{unaVentaCadaUno}{l:Local}{\bool}
-	\asegura{result==(\forall \; i \; \leftarrow  [          |empleados(l)| \: ..\: |limpiar(l)|) \; ) \; limpiar(l)[i]==limpiar(l)[i-|empleados[l]| \; ] }	
+	\asegura{res==(\forall \; i \; \leftarrow  [|empleados(l)| \: ..\: |limpiar(l)|) \; ) \; limpiar(l)[i]==limpiar(l)[i-|empleados[l]| \; ] }	
 \end{problema}
 
 \begin{problema}{venderL}{l: Local, p:Pedido}{}
@@ -127,7 +127,7 @@
 	 \asegura{mismos(ventas(l),ventas(pre(l)))}
 	 \asegura{(\forall b \selec bebidasDelLocal(l)) stockBebidas(l,b) == stockBebidas(pre(l),b)}
 	 \asegura{(\forall h \selec sandwichesDelLocal(l)) stockSandwiches(l,h) == stockSandwiches(pre(l),h)}
-	 \asegura[sigueEmpleado]{energiaEmpleado(pre(l),e)-n \geq 0 \Rightarrow \\
+	 \asegura[sigueSiendoEmpleado]{energiaEmpleado(pre(l),e)-n \geq 0 \Rightarrow \\
 	 (mismos(empleados(l),empleados(pre(l))) \: \land \:  mismos(desempleados(l),desempleados(pre(l))) \\
 	 \land \: energiaEmpleado(l,e) == energiaEmpleado(pre(l),e)-n)}
 	 \asegura[esDespedido]{energiaEmpleado(pre(l),e)-n < 0 \Rightarrow \\
@@ -137,6 +137,9 @@
 
 \begin{problema}{elVagonetaL}{l: Local}{Empleado}	
    \asegura{maximodescanso(l,res)=max([maximodescanso(l,empleados(l)[i])|i \leftarrow [0..|empleados(l)|)])}
+   
+	\medskip   
+   
    \aux{maximodescanso}{l : Local, e : Empleado}{int}{max([apar(l,e)[i]-apar(l,e)[i-1]-1 | i\leftarrow [1..|apar(l,e)|)])}
    \aux{apar}{l : Local, e : Empleado}{[int]}{[0]++[i+1 | i \leftarrow [0..|limpiar(l)|), \: limpiar(l)[i]==e]++ [|limpiar(l)|+1]}   
 \end{problema}
@@ -156,9 +159,9 @@
     \asegura{desempleados(l) == desempleados(pre(l))}
     \asegura{bebidasDelLocal(l) == bebidasDelLocal(pre(l))}
     \asegura{sandwichesDelLocal(l) == sandwichesDelLocal(pre(l))}
-    \asegura{(\forall e \selec empleados(l), e \neq empleado(l,n)) energiaEmpleados(l,e) == energiaEmpleados(pre(l))}
-    \asegura{anteriorEnergia(pre(l),n) < 100 \Rightarrow energiaEmpleados(l,empleado(l,n)) == anteriorEnergia(pre(l),n) }
-    \asegura{anteriorEnergia(pre(l),n) \geq 100 \Rightarrow energiaEmpleados(l,empleado(l,n)) == 100}
+    \asegura{(\forall e \selec empleados(l), e \neq empleado(l,n)) energiaEmpleado(l,e) == energiaEmpleado(pre(l))}
+    \asegura{anteriorEnergia(pre(l),n) < 100 \Rightarrow energiaEmpleado(l,empleado(l,n)) == anteriorEnergia(pre(l),n) }
+    \asegura{anteriorEnergia(pre(l),n) \geq 100 \Rightarrow energiaEmpleado(l,empleado(l,n)) == 100}
     \asegura{(\forall b \selec bebidasDelLocal(l)) \\
     	stockBebidas(l,b) == stockBebidas(pre(l),b) + cantBebida(b,pedido(pre(l),n))}
     \asegura{(\forall s \selec sandwichesDelLocal(l)) \\
