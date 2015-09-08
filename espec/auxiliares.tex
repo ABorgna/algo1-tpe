@@ -68,5 +68,5 @@
 \aux{combosVendidos}{l: Local, e: Empleado}{\ent}{
     \sum [ \: |combos(p)| \: | \: p \selec ventas(l), \: atendio(p) == e]
 }    
-  \aux{limpiar}{l:local}{[String]}{[atendio(ventas(l)[i]) \: | \: i\leftarrow [0 \: .. \: |ventas(l)|), \: atendio(ventas(l)[i])\in empleados(l)]} 
+  \aux{limpiar}{l:local}{[Empleado]}{[atendio(ventas(l)[i]) \: | \: i\leftarrow [0 \: .. \: |ventas(l)|), \: atendio(ventas(l)[i])\in empleados(l)]} 
 
