@@ -27,7 +27,7 @@
 }
 
 \aux{sinRep}{xs : [T]}{[T]}{
-	[xs_i | i \selec [0..|xs|), j \selec [i..|xs), i \neq j]
+	[xs_i | i \selec [0..|xs|), \neg (\exists j \selec (i..|xs|)) xs_i == xs_j ]
 }
 
 \aux{sacar}{x : T, xs : [T]}{[T]}{

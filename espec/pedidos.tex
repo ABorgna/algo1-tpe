@@ -74,15 +74,16 @@
 	\asegura{|combos(p)| == |combos(pre(p))|}
 	\asegura{(\forall c \selec combos(p)) bebida(c) \in bebidasDe(pre(p)))}
 	\asegura{(\forall c \selec combos(p)) sandwich(c) \in sandwichesDe(pre(p))}
-	
+	\asegura{(\forall x \selec combosSinRep(pre(p)))x \in combos(p)}
 
 	\medskip	
-	\aux{combosUnicos}{}
-
-	\aux{bebidasDe}{p : Pedido}{[Bebida]}{
-		sinRep(bebidasCombo(combos(p)))
-	}
-	\aux{sandwichesDe}{p : Pedido}{[Hamburguesa]}{
-		sinRep(sandwichesCombo(combos(p)))
-	}
+	\aux{combosSinRep}{p : Pedido}{[Combo]}{  
+        [ combos(p)_i | i \selec [0..|combos(p)|), \neg (\exists j \selec (i..|combos(p)|)) comboIgual(combos(p)_i, combos(p)_j)]
+    }
+    \aux{bebidasDe}{p : Pedido}{[Bebida]}{
+        sinRep(bebidasCombo(combos(p)))
+    }
+    \aux{sandwichesDe}{p : Pedido}{[Hamburguesa]}{
+        sinRep(sandwichesCombo(combos(p)))
+    }
 \end{problema}
