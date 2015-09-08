@@ -35,7 +35,7 @@
 \end{problema}
 
 \begin{problema}{unaVentaCadaUno}{l:Local}{\bool}
-	\asegura{result==(\forall \; i \; \leftarrow  [          |empleados(l)| \: ..\: |limpiar(l)|) \; ) \; limpiar(l)[i]==limpiar(l)[i-|empleados[l]| \; ] }	
+	\asegura{res==(\forall \; i \; \leftarrow  [|empleados(l)| \: ..\: |limpiar(l)|) \; ) \; limpiar(l)[i]==limpiar(l)[i-|empleados[l]| \; ] }	
 \end{problema}
 
 \begin{problema}{venderL}{l: Local, p:Pedido}{}
@@ -95,15 +95,15 @@
 \begin{problema}{candidatosAEmpleadosDelMesL}{l: Local}{[Empleado]}
     \requiere{|empleados(l)| > 0}
     \asegura{|\res| > 0}
-    \asegura{mismos(\res, [e \: | \: e \selec empleados(l), ventasEchas(l,e) == maxVentas(l), \\ combosVendidos(l,e) == maxCombos(l,maxVentas(l))])}
+    \asegura{mismos(\res, [e \: | \: e \selec empleados(l), ventasHechas(l,e) == maxVentas(l), \\ combosVendidos(l,e) == maxCombos(l,maxVentas(l))])}
 
     \medskip
 
     \aux{maxVentas}{l : Local}{\ent}{
-        max([ventasEchas(l,e) \: | \: e \selec empleados(l)])
+        max([ventasHechas(l,e) \: | \: e \selec empleados(l)])
     }
     \aux{maxCombos}{l : Local, ventas : \ent}{\ent}{ \\
-        max([combosVendidos(l,e) \: | \: e \selec empleados(l), ventasEchas(l,e) == ventas])
+        max([combosVendidos(l,e) \: | \: e \selec empleados(l), ventasHechas(l,e) == ventas])
     }
 \end{problema}
 
@@ -122,7 +122,7 @@
 	 \asegura{mismos(ventas(l),ventas(pre(l)))}
 	 \asegura{(\forall b \selec bebidasDelLocal(l)) stockBebidas(l,b) == stockBebidas(pre(l),b)}
 	 \asegura{(\forall h \selec sandwichesDelLocal(l)) stockSandwiches(l,h) == stockSandwiches(pre(l),h)}
-	 \asegura[sigueEmpleado]{energiaEmpleado(pre(l),e)-n \geq 0 \Rightarrow \\
+	 \asegura[sigueSiendoEmpleado]{energiaEmpleado(pre(l),e)-n \geq 0 \Rightarrow \\
 	 (mismos(empleados(l),empleados(pre(l))) \: \land \:  mismos(desempleados(l),desempleados(pre(l))) \\
 	 \land \: energiaEmpleado(l,e) == energiaEmpleado(pre(l),e)-n)}
 	 \asegura[esDespedido]{energiaEmpleado(pre(l),e)-n < 0 \Rightarrow \\
@@ -132,6 +132,9 @@
 
 \begin{problema}{elVagonetaL}{l: Local}{Empleado}	
    \asegura{maximodescanso(l,res)=max([maximodescanso(l,empleados(l)[i])|i \leftarrow [0..|empleados(l)|)])}
+   
+	\medskip   
+   
    \aux{maximodescanso}{l : Local, e : Empleado}{int}{max([apar(l,e)[i]-apar(l,e)[i-1]-1 | i\leftarrow [1..|apar(l,e)|)])}
    \aux{apar}{l : Local, e : Empleado}{[int]}{[0]++[i+1 | i \leftarrow [0..|limpiar(l)|), \: limpiar(l)[i]==e]++ [|limpiar(l)|+1]}   
 \end{problema}
