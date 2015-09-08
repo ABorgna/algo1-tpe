@@ -8,6 +8,7 @@
 \end{problema}
 
 \begin{problema}{numeroP}{p: Pedido}{\ent}
+	\asegura{res==numero(p)}
 \end{problema}
 
 \begin{problema}{atendioP}{p: Pedido}{Empleado}
@@ -26,6 +27,12 @@
 \end{problema}
 
 \begin{problema}{anularComboP}{p: Pedido, i:\ent}{}
+\requiere{0 \leq i < |combos(p)|}
+    \requiere{|combos(p)|>1}
+    \modifica{p}
+    \asegura{numero(p) == numero(pre(p))}
+    \asegura{atendio(p) == atendio(pre(p))}
+    \asegura{combos(p) == [combos(pre(p))[j]|j \leftarrow [0 \: ..\: |combos(pre(p))|), \; j\neq i) \; ]}
 \end{problema}
 
 \begin{problema}{cambiarBebidaComboP}{p: Pedido, b: Bebida, i:\ent} {}
