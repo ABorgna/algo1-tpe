@@ -100,15 +100,15 @@
 \begin{problema}{candidatosAEmpleadosDelMesL}{l: Local}{[Empleado]}
     \requiere{|empleados(l)| > 0}
     \asegura{|\res| > 0}
-    \asegura{mismos(\res, [e \: | \: e \selec empleados(l), ventasEchas(l,e) == maxVentas(l), \\ combosVendidos(l,e) == maxCombos(l,maxVentas(l))])}
+    \asegura{mismos(\res, [e \: | \: e \selec empleados(l), ventasHechas(l,e) == maxVentas(l), \\ combosVendidos(l,e) == maxCombos(l,maxVentas(l))])}
 
     \medskip
 
     \aux{maxVentas}{l : Local}{\ent}{
-        max([ventasEchas(l,e) \: | \: e \selec empleados(l)])
+        max([ventasHechas(l,e) \: | \: e \selec empleados(l)])
     }
     \aux{maxCombos}{l : Local, ventas : \ent}{\ent}{ \\
-        max([combosVendidos(l,e) \: | \: e \selec empleados(l), ventasEchas(l,e) == ventas])
+        max([combosVendidos(l,e) \: | \: e \selec empleados(l), ventasHechas(l,e) == ventas])
     }
 \end{problema}
 
