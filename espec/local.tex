@@ -1,5 +1,7 @@
 
 \begin{problema}{stockBebidasL}{l: Local, b:Bebida}{Cantidad}
+	\requiere{b \in bebidasDelLocal(l)}
+	\asegura{\res == stockBebidas(l,b)}
 \end{problema}
 
 \begin{problema}{stockSandwichesL}{l: Local, h:Hamburguesa}{Cantidad}
@@ -16,6 +18,7 @@
 \end{problema}
 
 \begin{problema}{empleadosL}{l: Local}{[Empleado]}
+	\asegura{mismos(res,empleados(l))}
 \end{problema}
 
 \begin{problema}{desempleadosL}{l: Local}{[Empleado]}
@@ -32,6 +35,7 @@
 \end{problema}
 
 \begin{problema}{unaVentaCadaUno}{l:Local}{\bool}
+	\asegura{result==(\forall \; i \; \leftarrow  [          |empleados(l)| \: ..\: |limpiar(l)|) \; ) \; limpiar(l)[i]==limpiar(l)[i-|empleados[l]| \; ] }	
 \end{problema}
 
 \begin{problema}{venderL}{l: Local, p:Pedido}{}
@@ -131,7 +135,10 @@
 	  \asegura{(\forall x \selec empleados(l), x \neq e) enegiaEmpleado(l,x) == enegiaEmpleado(pre(l),x)}
 \end{problema}
 
-\begin{problema}{elVagonetaL}{l: Local}{Empleado}
+\begin{problema}{elVagonetaL}{l: Local}{Empleado}	
+   \asegura{maximodescanso(l,res)=max([maximodescanso(l,empleados(l)[i])|i \leftarrow [0..|empleados(l)|)])}
+   \aux{maximodescanso}{l : Local, e : Empleado}{int}{max([apar(l,e)[i]-apar(l,e)[i-1]-1 | i\leftarrow [1..|apar(l,e)|)])}
+   \aux{apar}{l : Local, e : Empleado}{[int]}{[0]++[i+1 | i \leftarrow [0..|limpiar(l)|), \: limpiar(l)[i]==e]++ [|limpiar(l)|+1]}   
 \end{problema}
 
 \begin{problema}{anularPedidoL}{l: Local, n: \ent}{}
