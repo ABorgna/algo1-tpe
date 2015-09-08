@@ -18,7 +18,7 @@
 \end{problema}
 
 \begin{problema}{desempleadosL}{l: Local}{[Empleado]}
-	\asegura{\res == desempleados(l)}
+	\asegura{mismos(res,desempleados(l))}
 \end{problema}
 
 \begin{problema}[energia]{energiaEmpleadoL}{l: Local, e:Empleado}{Energia}
@@ -33,7 +33,6 @@
 \end{problema}
 
 \begin{problema}{venderL}{l: Local, p:Pedido}{}
-	\modifica{l}
 	
 	\requiere[siguientePedido]{numero(p) == max(numsVentas(l)) + 1}
 	\requiere[vendeSandwich]{(\forall x \selec combos(p)) x \in sandwichesDelLocal(l)}
@@ -41,7 +40,7 @@
 	\requiere[stockBebidas]{(\forall b \selec bebidasDelLocal(l)) stockBebidas(l,b) \geq cantidadDeBebida(b,p)}
 	\requiere[stockBebidas]{(\forall s \selec sandwichesDelLocal(l)) stockSandwiches(l,s) \geq cantidadDeSandwich(s,p)}
 	\requiere{atendio(p) \in empleados(l)}
-	
+	\modifica{l}
 	\medskip
 	\asegura{bebidasDelLocal(l) == bebidasDelLocal(pre(l))}
 	\asegura{sandwichesDelLocal(l) == sandwichesDelLocal(pre(l))}
@@ -104,12 +103,12 @@
 \end{problema}
 
 \begin{problema}{anularPedidoL}{l: Local, n: \ent}{}
-	\modifica{l}
+	
 	\requiere[pedidoValido]{(\exists p \selec ventas(l)) numero(p)==n}
 	\requiere[sigueEmpleado]{empleado(l,n) \in empleados(l)}
 	
     \medskip
-    
+    \modifica{l}
     \asegura{empleados(l) == empleados(pre(l))}
     \asegura{desempleados(l) == desempleados(pre(l))}
     \asegura{bebidasDelLocal(l) == bebidasDelLocal(pre(l))}

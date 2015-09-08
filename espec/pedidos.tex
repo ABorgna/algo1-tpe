@@ -31,20 +31,18 @@
 \end{problema}
 
 \begin{problema}{elMezcladitoP}{p: Pedido}{}
+	\requiere{|combos(p)| \leq |bebidasDe(p)|*|sandwichesDe(p)|}
 	\modifica{p}
-	
-	\requiere{|combos(p)| \geq |bebidasDe(p)|*|sandwichesDe(p)|}
-	
 	\asegura{(\forall i,j \selec combos(p), i \neq j)  \neg comboIgual(combos(p)_i, combos(p)_j)}
 	\asegura{|combos(p)| == |combos(pre(p))|}
-	\asegura{(\forall c \selec combos(p)) bebida(c) \in [ bebida(x) | x \selec combos(pre(p))]}
-	\asegura{(\forall c \selec combos(p)) sandwich(c) \in [ sandwich(x) | x \selec combos(pre(p))]}
+	\asegura{(\forall c \selec combos(p)) bebida(c) \in bebidasDe(pre(p)))}
+	\asegura{(\forall c \selec combos(p)) sandwich(c) \in sandwichesDe(pre(p))}
 	
 	
 	\aux{bebidasDe}{p : Pedido}{[Bebida]}{
-		sinRep([bebida(c)|c \selec combos(p)]
+		sinRep(bebidasCombo(combos(p)))
 	}
 	\aux{sandwichesDe}{p : Pedido}{[Hamburguesa]}{
-		sinRep([sandwich(c)|c \selec combos(p)])
+		sinRep(sandwichesCombo(combos(p)))
 	}
 \end{problema}

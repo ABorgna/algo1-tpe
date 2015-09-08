@@ -26,6 +26,10 @@
 	|[y | y \selec xs, y == x]|
 }
 
+\aux{sinRep}{xs : [T]}{[T]}{
+	[xs_i | i \selec [0..|xs|), j \selec [i..|xs), i \neq j]
+}
+
 \subsection{Combo}
 % los aux del tipo combo
 \aux{comboIgual}{c1 : Combo, c2 : Combo}{\bool}{
@@ -33,7 +37,12 @@
 }
 
 \subsection{Pedido}
-
+\aux{bebidasCombo}{cs : [Combo]}{[Bebida]}{
+	[bebida(c)|c \selec cs]
+}
+\aux{sandwichesCombo}{cs : [Combo]}{[Sandwich]}{
+	[sandwich(c)|c \selec cs]
+}
 % los aux del tipo pedido
 
 
