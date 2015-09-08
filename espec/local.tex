@@ -11,7 +11,8 @@
     \asegura{mismos(\res,bebidasDelLocal(l))}
 \end{problema}
 
-\begin{problema}{sandwichesDelLocalL}{l: Local}{[Hamburguesa]}
+\begin{problema}[sandwiches]{sandwichesDelLocalL}{l: Local}{[Hamburguesa]}
+	\asegura{mismos(\res,sandwichesDelLocal(l))}
 \end{problema}
 
 \begin{problema}{empleadosL}{l: Local}{[Empleado]}
@@ -27,6 +28,7 @@
 \end{problema}
 
 \begin{problema}{ventasL}{l: Local}{[Pedido]}
+	\asegura{mismos(\res,ventas(l))}
 \end{problema}
 
 \begin{problema}{unaVentaCadaUno}{l:Local}{\bool}
@@ -40,8 +42,13 @@
 	\requiere[stockBebidas]{(\forall b \selec bebidasDelLocal(l)) stockBebidas(l,b) \geq cantidadDeBebida(b,p)}
 	\requiere[stockBebidas]{(\forall s \selec sandwichesDelLocal(l)) stockSandwiches(l,s) \geq cantidadDeSandwich(s,p)}
 	\requiere{atendio(p) \in empleados(l)}
+	
+	\medskip	
+	
 	\modifica{l}
+	
 	\medskip
+
 	\asegura{bebidasDelLocal(l) == bebidasDelLocal(pre(l))}
 	\asegura{sandwichesDelLocal(l) == sandwichesDelLocal(pre(l))}
 	\medskip	
@@ -55,7 +62,6 @@
 	\asegura{\neg sePuede(pre(l),p) \Rightarrow \\
 		(\forall s \selec sandwichesDelLocal(l))stockSandwiches(l,s) == stockSandwiches(pre(l),s)}
 	\asegura{\neg sePuede(pre(l),p) \Rightarrow ventas(l) == ventas(pre(l))}
-
 	
 	\medskip
 	
@@ -70,7 +76,6 @@
 	\asegura{sePuede(pre(l),p) \Rightarrow  \\
 		 (\forall s \selec sandwichesDelLocal(l))stockSandwiches(l,s) == stockSandwiches(pre(l),s) - cantSandwich(s,p)}
 	\asegura{sePuede(pre(l),p) \Rightarrow mismos(ventas(l),ventas(pre(l))++p)}
-	
 	
 	\medskip
 	
@@ -104,6 +109,26 @@
 \end{problema}
 
 \begin{problema}{sancionL}{l: Local, e:Empleado, n:Energia}{}
+	 \requiere{n \geq 0}
+	 \requiere{e \in empleados(l)}
+	 
+	 \medskip
+ 
+ 	 \modifica{l}
+	 
+	 \medskip
+
+	 \asegura{mismos(bebidasDelLocal(l),bebidasDelLocal(pre(l)))}
+	 \asegura{mismos(sandwichesDelLocal(l),sandwichesDelLocal(pre(l)))}
+	 \asegura{mismos(ventas(l),ventas(pre(l)))}
+	 \asegura{(\forall b \selec bebidasDelLocal(l)) stockBebidas(l,b) == stockBebidas(pre(l),b)}
+	 \asegura{(\forall h \selec sandwichesDelLocal(l)) stockSandwiches(l,h) == stockSandwiches(pre(l),h)}
+	 \asegura[sigueEmpleado]{energiaEmpleado(pre(l),e)-n \geq 0 \Rightarrow \\
+	 (mismos(empleados(l),empleados(pre(l))) \: \land \:  mismos(desempleados(l),desempleados(pre(l))) \\
+	 \land \: energiaEmpleado(l,e) == energiaEmpleado(pre(l),e)-n)}
+	 \asegura[esDespedido]{energiaEmpleado(pre(l),e)-n < 0 \Rightarrow \\
+	 (mismos(empleados(l),sacar(e,empleados(pre(l)))) \: \land \:  mismos(desempleados(l),e:desempleados(pre(l))))
+	 }
 \end{problema}
 
 \begin{problema}{elVagonetaL}{l: Local}{Empleado}
@@ -115,24 +140,23 @@
 	\requiere[sigueEmpleado]{empleado(l,n) \in empleados(l)}
 	
     \medskip
+
     \modifica{l}
+	
+	\medskip
+   
     \asegura{empleados(l) == empleados(pre(l))}
     \asegura{desempleados(l) == desempleados(pre(l))}
     \asegura{bebidasDelLocal(l) == bebidasDelLocal(pre(l))}
     \asegura{sandwichesDelLocal(l) == sandwichesDelLocal(pre(l))}
     \asegura{(\forall e \selec empleados(l), e \neq empleado(l,n)) energiaEmpleados(l,e) == energiaEmpleados(pre(l))}
-    \asegura{anteriorEnergia(pre(l),n) < 100 \Rightarrow energiaEmpleados(l,empleado(l,n)) == anteriorEnergia(pre(l),n) }
-    \asegura{anteriorEnergia(pre(l),n) \geq 100 \Rightarrow energiaEmpleados(l,empleado(l,n)) == 100}
-    \asegura{(\forall b \selec bebidasDelLocal(l)) \\
-    	stockBebidas(l,b) == stockBebidas(pre(l),b) + cantBebida(b,pedido(pre(l),n))}
-    \asegura{(\forall s \selec sandwichesDelLocal(l)) \\
-    	stockSandwiches(l,s) == stockSandwiches(pre(l),s) + cantSandwich(s,pedido(pre(l),n))}
+    \asegura{energiaEmpleados(l,empleado(l,n)) == energiaEmpleados(pre(l),empleado(l,n)) + energiaPedido(pedido(pre(l),n))}
+    \asegura{(\forall b \selec bebidasDelLocal(l))stockBebidas(l,b) == stockBebidas(pre(l)) + cantBebida(b,pedido(pre(l),n))}
+    \asegura{(\forall s \selec sandwichesDelLocal(l))stockSandwiches(l,s) == stockSandwiches(pre(l)) + cantSandwich(s,pedido(pre(l),n))}
     \asegura{mismos(ventas(l),[v | v \selec ventas(pre(l)), v \neq pedido(pre(l),n)]}
     
     \medskip
-    \aux{anteriorEnergia}{l : Local, n : \ent}{\ent}{
-    	energiaEmpleados(l,empleado(l,n)) + energiaPedido(pedido(l,n))
-    }
+    
     \aux{pedido}{l : Local, n : \ent}{Pedido}{
     	cab([p \: | \: p \selec ventas(l), numero(p) == n])
     }
@@ -140,10 +164,10 @@
     	atendio(pedido(l,n))
     }
     \aux{cantSandwich}{s : Hamburguesa, p : Pedido}{\ent}{
-    	contar(s,sandwichesCombo(combos(p)))
+    	contar(s,[sandwich(c)|c \selec combos(p)])
     }
     \aux{cantBebida}{b : Bebida, p : Pedido}{\ent}{
-    	contar(b,bebidasCombo(combos(p)))
+    	contar(b,[bebida(c)|c \selec combos(p)])
     }
     \aux{energiaPedido}{p : Pedido}{\ent}{
     	\sum [dificultad(x) | x \selec combos(p)]
