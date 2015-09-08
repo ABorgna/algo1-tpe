@@ -30,6 +30,10 @@
 	[xs_i | i \selec [0..|xs|), j \selec [i..|xs), i \neq j]
 }
 
+\aux{sacar}{x : T, xs : [T]}{[T]}{
+	[y | y \selec xs, y \neq x]
+}
+
 \subsection{Combo}
 % los aux del tipo combo
 \aux{comboIgual}{c1 : Combo, c2 : Combo}{\bool}{
