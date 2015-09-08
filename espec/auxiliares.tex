@@ -41,11 +41,17 @@
 }
 
 \subsection{Pedido}
+\aux{igualesSNumero}{p1 : Pedido, p2 : Pedido}{\bool}{
+    atendio(p1)==atendio(p2) \land combos(p1)==combos(p2)
+}
 \aux{bebidasCombo}{cs : [Combo]}{[Bebida]}{
 	[bebida(c)|c \selec cs]
 }
 \aux{sandwichesCombo}{cs : [Combo]}{[Sandwich]}{
 	[sandwich(c)|c \selec cs]
+}
+\aux{energiaPedido}{p : Pedido}{\ent}{
+    \sum [dificultad(x) | x \selec combos(p)]
 }
 % los aux del tipo pedido
 
@@ -70,3 +76,9 @@
 }    
   \aux{limpiar}{l:local}{[Empleado]}{[atendio(ventas(l)[i]) \: | \: i\leftarrow [0 \: .. \: |ventas(l)|), \: atendio(ventas(l)[i])\in empleados(l)]} 
 
+\aux{cantSandwich}{s : Hamburguesa, p : Pedido}{\ent}{
+   	contar(s,sandwichesCombo(combos(p)))
+}
+\aux{cantBebida}{b : Bebida, p : Pedido}{\ent}{
+  	contar(b,bebidasCombo(combos(p))
+}

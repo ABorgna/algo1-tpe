@@ -39,8 +39,9 @@
 \end{problema}
 
 \begin{problema}{venderL}{l: Local, p:Pedido}{}
-	
-	\requiere[siguientePedido]{numero(p) == max(numsVentas(l)) + 1}
+	\requiere[noHabiaPedidos]{|ventas(l)|==0 \Rightarrow numero(p)==1}
+	\requiere[siguientePedido]{|ventas(l)| \neq 0 \Rightarrow \\
+        numero(p) == max(numsVentas(l)) + 1 \lor numero(p) == min(numsVentas(l))-1}
 	\requiere[vendeSandwich]{(\forall x \selec combos(p)) x \in sandwichesDelLocal(l)}
 	\requiere[vendeBebida]{(\forall x \selec bebidas(p)) x \in bebidasDelLocal(l)}
 	\requiere[stockBebidas]{(\forall b \selec bebidasDelLocal(l)) stockBebidas(l,b) \geq cantidadDeBebida(b,p)}
@@ -57,10 +58,10 @@
 	\asegura{sandwichesDelLocal(l) == sandwichesDelLocal(pre(l))}
 	\medskip	
 	
-	\asegura{\neg sePuede(pre(l),p) \Rightarrow mismos([x | x \selec empleados(pre(l)), x \neq atendio(p)], empleados(l) )}
+	\asegura{\neg sePuede(pre(l),p) \Rightarrow mismos(sacar(atendio(p),empleados(pre(l))), empleados(l) )}
 	\asegura{\neg sePuede(pre(l),p) \Rightarrow mismos(desempleados(pre(l))++atendio(p), desempleados(l))}
 	\asegura{\neg sePuede(pre(l),p) \Rightarrow \\
-		(\forall e \selec empleados(l)) energiaEmpleados(l,e) == energiaEmpleados(pre(l))}
+		(\forall e \selec empleados(l)) energiaEmpleado(l,e) == energiaEmpleado(pre(l))}
 	\asegura{\neg sePuede(pre(l),p) \Rightarrow \\
 		(\forall b \selec bebidasDelLocal(l))stockBebidas(l,b) == stockBebidas(pre(l),b)}
 	\asegura{\neg sePuede(pre(l),p) \Rightarrow \\
@@ -72,9 +73,9 @@
 	\asegura{sePuede(pre(l),p) \Rightarrow empleados(l) == empleados(pre(l))}
 	\asegura{sePuede(pre(l),p) \Rightarrow desempleados(l) == desempleados(pre(l))}
 	\asegura{sePuede(pre(l),p) \Rightarrow \\
-		(\forall e \selec empleados(l), e \neq atendio(p)) energiaEmpleados(l,e) == energiaEmpleados(pre(l))}
+		(\forall e \selec empleados(l), e \neq atendio(p)) energiaEmpleado(l,e) == energiaEmpleado(pre(l))}
 	\asegura{sePuede(pre(l),p) \Rightarrow \\
-		energiaEmpleados(l,atendio(p)) == energiaEmpleados(pre(l),atendio(p)) - energiaPedido(p)}
+		energiaEmpleado(l,atendio(p)) == energiaEmpleado(pre(l),atendio(p)) - energiaPedido(p)}
 	\asegura{sePuede(pre(l),p) \Rightarrow \\ 
 		(\forall b \selec bebidasDelLocal(l))stockBebidas(l,b) == stockBebidas(pre(l),b) - cantBebida(b,p)}
 	\asegura{sePuede(pre(l),p) \Rightarrow  \\
@@ -88,12 +89,6 @@
 	}
 	\aux{sePuede}{l : Local, p : Pedido}{\bool}{
 		energiaEmpleado(l,atendio(p)) > energiaPedido(p)
-	}
-	\aux{cantSandwich}{s : Hamburguesa, p : Pedido}{\ent}{
-		contar(s,[sandwich(c)|c \selec combos(p)])
-	}
-	\aux{cantBebida}{b : Bebida, p : Pedido}{\ent}{
-		contar(b,[bebida(c)|c \selec combos(p)])
 	}
 \end{problema} %auxilio, no entra en la pantalla todo y no se me ocurre como achicarlo mas D:
 
@@ -156,34 +151,27 @@
     \asegura{desempleados(l) == desempleados(pre(l))}
     \asegura{bebidasDelLocal(l) == bebidasDelLocal(pre(l))}
     \asegura{sandwichesDelLocal(l) == sandwichesDelLocal(pre(l))}
-    \asegura{(\forall e \selec empleados(l), e \neq empleado(l,n)) energiaEmpleados(l,e) == energiaEmpleados(pre(l))}
-    \asegura{anteriorEnergia(pre(l),n) < 100 \Rightarrow energiaEmpleados(l,empleado(l,n)) == anteriorEnergia(pre(l),n) }
-    \asegura{anteriorEnergia(pre(l),n) \geq 100 \Rightarrow energiaEmpleados(l,empleado(l,n)) == 100}
+    \asegura{(\forall e \selec empleados(l), e \neq empleado(l,n)) energiaEmpleado(l,e) == energiaEmpleado(pre(l))}
+    \asegura{anteriorEnergia(pre(l),n) < 100 \Rightarrow energiaEmpleado(l,empleado(l,n)) == anteriorEnergia(pre(l),n) }
+    \asegura{anteriorEnergia(pre(l),n) \geq 100 \Rightarrow energiaEmpleado(l,empleado(l,n)) == 100}
     \asegura{(\forall b \selec bebidasDelLocal(l)) \\
     	stockBebidas(l,b) == stockBebidas(pre(l),b) + cantBebida(b,pedido(pre(l),n))}
     \asegura{(\forall s \selec sandwichesDelLocal(l)) \\
     	stockSandwiches(l,s) == stockSandwiches(pre(l),s) + cantSandwich(s,pedido(pre(l),n))}
-    \asegura{mismos(ventas(l),[v | v \selec ventas(pre(l)), v \neq pedido(pre(l),n)]}
+    \asegura[correlatividadMenores]{\\(\forall x \selec ventas(pre(l)), numero(x)<n) x \in ventas(l)}
+    \asegura[correlatividadMayores]{\\(\forall x \selec ventas(pre(l)), numero(x)>n) (\exists y \selec ventas(l)) igualesSNumer(x,y) \land numero(x)==numero(y)+1}
+    \asegura{|ventas(l)|==|ventas(pre(l))-1|}
     
     \medskip
     
     \aux{anteriorEnergia}{l : Local, n : \ent}{\ent}{
-    	energiaEmpleados(l,empleado(l,n)) + energiaPedido(pedido(l,n))
+    	energiaEmpleado(l,empleado(l,n)) + energiaPedido(pedido(l,n))
     }
     \aux{pedido}{l : Local, n : \ent}{Pedido}{
     	cab([p \: | \: p \selec ventas(l), numero(p) == n])
     }
     \aux{empleado}{l : Local, n : \ent}{Empleado}{
     	atendio(pedido(l,n))
-    }
-    \aux{cantSandwich}{s : Hamburguesa, p : Pedido}{\ent}{
-        contar(s,sandwichesCombo(combos(p)))
-    }
-    \aux{cantBebida}{b : Bebida, p : Pedido}{\ent}{
-        contar(b,bebidasCombo(combos(p))
-    }
-    \aux{energiaPedido}{p : Pedido}{\ent}{
-    	\sum [dificultad(x) | x \selec combos(p)]
     }
 \end{problema}
 

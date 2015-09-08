@@ -75,7 +75,7 @@
 	\asegura{(\forall c \selec combos(p)) bebida(c) \in bebidasDe(pre(p)))}
 	\asegura{(\forall c \selec combos(p)) sandwich(c) \in sandwichesDe(pre(p))}
 	
-	
+	\aux{combosUnicos}{}
 	\aux{bebidasDe}{p : Pedido}{[Bebida]}{
 		sinRep(bebidasCombo(combos(p)))
 	}
