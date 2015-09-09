@@ -58,9 +58,9 @@
 	\medskip	
 	
 	\asegura{\neg sePuede(pre(l),p) \Rightarrow mismos(sacar(atendio(p),empleados(pre(l))), empleados(l) )}
-	\asegura{\neg sePuede(pre(l),p) \Rightarrow mismos(desempleados(pre(l))++atendio(p), desempleados(l))}
+	\asegura{\neg sePuede(pre(l),p) \Rightarrow mismos(atendio(p):desempleados(pre(l)), desempleados(l))}
 	\asegura{\neg sePuede(pre(l),p) \Rightarrow \\
-		(\forall e \selec empleados(l)) energiaEmpleado(l,e) == energiaEmpleado(pre(l))}
+		(\forall e \selec empleados(l)) energiaEmpleado(l,e) == energiaEmpleado(pre(l),e)}
 	\asegura{\neg sePuede(pre(l),p) \Rightarrow \\
 		(\forall b \selec bebidasDelLocal(l))stockBebidas(l,b) == stockBebidas(pre(l),b)}
 	\asegura{\neg sePuede(pre(l),p) \Rightarrow \\
@@ -72,14 +72,14 @@
 	\asegura{sePuede(pre(l),p) \Rightarrow empleados(l) == empleados(pre(l))}
 	\asegura{sePuede(pre(l),p) \Rightarrow desempleados(l) == desempleados(pre(l))}
 	\asegura{sePuede(pre(l),p) \Rightarrow \\
-		(\forall e \selec empleados(l), e \neq atendio(p)) energiaEmpleado(l,e) == energiaEmpleado(pre(l))}
+		(\forall e \selec empleados(l), e \neq atendio(p)) energiaEmpleado(l,e) == energiaEmpleado(pre(l),e)}
 	\asegura{sePuede(pre(l),p) \Rightarrow \\
 		energiaEmpleado(l,atendio(p)) == energiaEmpleado(pre(l),atendio(p)) - energiaPedido(p)}
 	\asegura{sePuede(pre(l),p) \Rightarrow \\ 
 		(\forall b \selec bebidasDelLocal(l))stockBebidas(l,b) == stockBebidas(pre(l),b) - cantBebida(b,p)}
 	\asegura{sePuede(pre(l),p) \Rightarrow  \\
 		 (\forall s \selec sandwichesDelLocal(l))stockSandwiches(l,s) == stockSandwiches(pre(l),s) - cantSandwich(s,p)}
-	\asegura{sePuede(pre(l),p) \Rightarrow mismos(ventas(l),ventas(pre(l))++p)}
+	\asegura{sePuede(pre(l),p) \Rightarrow mismos(ventas(l),p:ventas(pre(l)))}
 	
 	\medskip
 	
@@ -92,9 +92,9 @@
 \end{problema} %auxilio, no entra en la pantalla todo y no se me ocurre como achicarlo mas D:
 
 \begin{problema}{candidatosAEmpleadosDelMesL}{l: Local}{[Empleado]}
-    \requiere{|empleados(l)| > 0}
-    \asegura{|\res| > 0}
-    \asegura{mismos(\res, [e \: | \: e \selec empleados(l), ventasHechas(l,e) == maxVentas(l), \\ combosVendidos(l,e) == maxCombos(l,maxVentas(l))])}
+    \asegura{|empleados(l)| == 0 \Rightarrow \res == []}
+    \asegura{|empleados(l)| > 0 \Rightarrow mismos(\res, [e \: | \: e \selec empleados(l), \\
+    ventasHechas(l,e) == maxVentas(l), combosVendidos(l,e) == maxCombos(l,maxVentas(l))])}
 
     \medskip
 
@@ -208,21 +208,18 @@
     }
     \asegura[conservaVentas]{ \\
         |ventas(l)| == |ventas(pre(l))| \land \\
-        (\forall i \selec [0 \ldots |ventas(l)|), i \neq posPedido(pre(l),n)) ventas(l)[i] == ventas(pre(l))[i]
+        (\forall p \selec ventas(pre(l)), numero(p) \neq n) \: (\exists q \in ventas(l)) \: p == q
     }
-    \asegura[agregaCombo]{ \\
-        numero(ventas(l)[\: posPedido(pre(l),n) \:]) == numero(pedido(pre(l),n)) \land \\
-        atendio(ventas(l)[\: posPedido(pre(l),n) \:]) == atendio(pedido(pre(l),n)) \land \\
-        combos(ventas(l)[\: posPedido(pre(l),n) \:]) == combos(pedido(pre(l),n)) ++ [c]
+    \asegura[agregaCombo]{ (\exists p \in ventas(l)) \\
+        numero(p) == n \land \\
+        atendio(p) == atendio(pedido(pre(l),n)) \land \\
+        combos(p) == combos(pedido(pre(l),n)) ++ [c]
     }
 
     \medskip
 
     \aux{pedido}{l : Local, n : \ent}{Pedido}{
         cab([p \: | \: p \selec ventas(l), numero(p) == n])
-    }
-    \aux{posPedido}{l : Local, n : \ent}{\ent}{
-        find(ventas(l),pedido(l,n))
     }
     \aux{empleado}{l : Local, n : \ent}{Empleado}{
         atendio(pedido(l,n))
