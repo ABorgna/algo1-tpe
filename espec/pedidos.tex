@@ -77,8 +77,8 @@
 	\asegura{(\forall x \selec combosSinRep(pre(p)))x \in combos(p)}
 
 	\medskip	
-	\aux{combosSinRep}{p : Pedido}{[Combo]}{  
-        [ combos(p)_i | i \selec [0..|combos(p)|), \neg (\exists j \selec (i..|combos(p)|)) comboIgual(combos(p)_i, combos(p)_j)]
+	\aux{combosSinRep}{p : Pedido}{[Combo]}{  \\ \ %cosas que pasan
+       [ combos(p)_i | i \selec [0..|combos(p)|), \neg (\exists j \selec (i..|combos(p)|)) comboIgual(combos(p)_i, combos(p)_j)]
     }
     \aux{bebidasDe}{p : Pedido}{[Bebida]}{
         sinRep(bebidasCombo(combos(p)))
