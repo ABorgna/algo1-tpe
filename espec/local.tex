@@ -39,7 +39,6 @@
 \end{problema}
 
 \begin{problema}{venderL}{l: Local, p:Pedido}{}
-	\requiere[noHabiaPedidos]{|ventas(l)|==0 \Rightarrow numero(p)==1}
 	\requiere[siguientePedido]{|ventas(l)| \neq 0 \Rightarrow \\
         numero(p) == max(numsVentas(l)) + 1 \lor numero(p) == min(numsVentas(l))-1}
 	\requiere[vendeSandwich]{(\forall x \selec combos(p)) x \in sandwichesDelLocal(l)}
